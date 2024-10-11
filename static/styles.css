@@ -1,0 +1,59 @@
+/* Estilos básicos */
+body {
+    background-color: #f8f9fa; /* Fundo suave */
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+/* Personalizar a navbar */
+.navbar {
+    background-color: #343a40;
+}
+
+.navbar a.nav-link {
+    color: #ffffff;
+}
+
+.navbar a.nav-link:hover {
+    color: #d4af37; /* Cor dourada ao passar o mouse */
+}
+
+/* Estilos para títulos */
+h1 {
+    font-size: 2.5rem;
+    color: #343a40;
+}
+
+/* Estilos para o cardápio */
+.card {
+    border: 1px solid #ddd;
+}
+
+.card-title {
+    color: #343a40;
+    font-weight: bold;
+}
+
+/* Estilo personalizado para o rodapé */
+footer {
+    margin-top: 400px;
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 20px 0;
+    position:relative;
+}
+/* Estilo para os botões */
+.btn {
+    background-color: #343a40;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* Efeito de hover */
+.btn:hover {
+    background-color: #d4af37; /* Cor dourada ao passar o mouse */
+    transform: scale(1.05); /* Leve aumento no tamanho */
+}

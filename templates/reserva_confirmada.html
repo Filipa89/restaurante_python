@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Reserva Confirmada{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Reserva Confirmada</h1>
+<p>Obrigado, {{ nome }}! Sua reserva para {{ pessoas }} pessoa(s) no dia {{ data }} às {{ horario }} foi confirmada.</p>
+<p>Entraremos em contato pelo telefone {{ telefone }} para qualquer detalhe adicional.</p>
+{% endblock %}

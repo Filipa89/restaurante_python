@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Reservas{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Faça sua Reserva</h1>
+<p>Preencha o formulário para reservar uma mesa:</p>
+<form method="post" action="/reservas">
+  <div class="form-group">
+    <label for="nome">Nome:</label>
+    <input type="text" class="form-control" id="nome" name="nome" required>
+  </div>
+  <div class="form-group">
+    <label for="telefone">Telefone:</label>
+    <input type="tel" class="form-control" id="telefone" name="telefone" required>
+  </div>
+  <div class="form-group">
+    <label for="data">Data:</label>
+    <input type="date" class="form-control" id="data" name="data" required>
+  </div>
+  <div class="form-group">
+    <label for="horario">Horário:</label>
+    <input type="time" class="form-control" id="horario" name="horario" required>
+  </div>
+  <div class="form-group">
+    <label for="pessoas">Número de Pessoas:</label>
+    <input type="number" class="form-control" id="pessoas" name="pessoas" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Reservar</button>
+</form>
+{% endblock %}
