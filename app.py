@@ -1,11 +1,7 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_mysqldb import MySQL  # Para a base de dados
 import os
 from werkzeug.utils import secure_filename
-from flask import redirect
-from flask import url_for
-
-
 
 
 app = Flask(__name__)
@@ -313,7 +309,15 @@ def contacto():
         nome = request.form['nome']
         email = request.form['email']
         mensagem = request.form['mensagem']
-        # Aqui você pode adicionar a lógica para processar o formulário, como enviar um e-mail
+        # Lógica para processar o formulário
+        cur = mysql.connection.cursor()
+        cur.execute('''
+            INSERT INTO mensagens (nome, email, mensagem)
+            VALUES (%s, %s, %s)
+        ''', (nome, email, mensagem))
+        mysql.connection.commit()
+        cur.close()
+        # Redirecionamento após o envio do formulário
         return render_template('obrigado.html', nome=nome)
     return render_template('contacto.html')
 
