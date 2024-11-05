@@ -1,6 +1,12 @@
 from flask import Flask, render_template, request
 from flask_mysqldb import MySQL  # Para a base de dados
 import os
+from werkzeug.utils import secure_filename
+from flask import redirect
+from flask import url_for
+
+
+
 
 app = Flask(__name__)
 
@@ -227,6 +233,80 @@ def cardapio():
     return render_template('cardapio.html', items=cardapio_items)
 '''
 
+@app.route('/admin')
+def admin():
+    try:
+        cur = mysql.connection.cursor()
+        # Consulta para pizzas
+        cur.execute("SELECT * FROM pizzas")
+        pizzas = cur.fetchall()
+        # Consulta para massas
+        cur.execute("SELECT * FROM massas")
+        massas = cur.fetchall()    
+        cur.close()
+    except Exception as e:
+        print(f"Erro ao aceder ao banco de dados: {e}")
+        pizzas = []
+        massas = []
+    return render_template('admin.html', pizzas=pizzas, massas=massas)
+
+@app.route('/delete_massa/<int:id>', methods=['POST'])
+def delete_massa(id):
+    try:
+        print(f"Tentando apagar massa com ID: {id}")
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM massas WHERE id = %s', (id,))
+        massa = cur.fetchone()
+        if not massa:
+            print("ID não encontrado.")
+            return redirect(url_for('admin'))
+
+        cur.execute('DELETE FROM massas WHERE id = %s', (id,))
+        mysql.connection.commit()
+        print("Registro apagado com sucesso.")
+        return redirect(url_for('admin'))
+    except Exception as e:
+        print(f"Erro ao apagar massa: {e}")
+        return redirect(url_for('admin'))
+    finally:
+        cur.close()
+
+# Define o caminho da pasta onde as imagens serão salvas
+UPLOAD_FOLDER = 'static/imgs'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.route('/inserir_produto', methods=['POST'])
+def inserir_produto():
+    try:
+        # Captura os dados do formulário
+        nome = request.form['nome']
+        descricao = request.form['descricao']
+        preco = request.form['preco']
+        imagem = request.files['imagem']
+        
+        # Valida e salva a imagem
+        if imagem and imagem.filename != '':
+            # Gera um nome seguro para o arquivo
+            filename = secure_filename(imagem.filename)
+            imagem.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        else:
+            # Se a imagem não estiver disponível ou inválida
+            return "Erro: Imagem inválida.", 400
+
+        # Salva o produto no banco de dados com o nome do arquivo da imagem
+        cur = mysql.connection.cursor()
+        cur.execute('''
+            INSERT INTO massas (nome, descricao, preco, imagem)
+            VALUES (%s, %s, %s, %s)
+        ''', (nome, descricao, preco, filename))
+        mysql.connection.commit()
+        cur.close()
+
+        return redirect(url_for('admin'))  # Redireciona para a página de listagem após inserção
+    except Exception as e:
+        print(f"Erro ao inserir produto: {e}")
+        return "Erro ao inserir produto.", 500
+    
 @app.route('/contacto', methods=['GET', 'POST'])
 def contacto():
     if request.method == 'POST':

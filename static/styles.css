@@ -57,3 +57,11 @@ footer {
     background-color: #d4af37; /* Cor dourada ao passar o mouse */
     transform: scale(1.05); /* Leve aumento no tamanho */
 }
+
+
+/* Estilo para o Admin */
+.product-item img{
+    width: 20px;
+    height: 20px;
+    object-fit: cover;
+}
