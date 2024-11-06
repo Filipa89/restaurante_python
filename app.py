@@ -72,12 +72,15 @@ def admin():
         ## Agrupar produtos por categoria
         produtos_por_categoria = defaultdict(list)
         for produto in produtos: produtos_por_categoria[produto[5]].append(produto)
+        # Consulta para reservas
+        cur.execute("SELECT * FROM reservas")
+        reservas = cur.fetchall()
         
         cur.close()
     except Exception as e:
         print(f"Erro ao aceder ao banco de dados: {e}")
         produtos = []
-    return render_template('admin.html', categorias=categorias_dict, produtos=produtos, produtos_por_categoria=produtos_por_categoria, mensagens=mensagens)
+    return render_template('admin.html', categorias=categorias_dict, produtos=produtos, produtos_por_categoria=produtos_por_categoria, mensagens=mensagens, reservas=reservas)
 
 @app.route('/inserir_categoria', methods=['POST'])
 def inserir_categoria():

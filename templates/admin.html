@@ -124,7 +124,7 @@
 {% endif %}
 
 
-<!-- Tabela de Contactos -->
+<!-- Tabela de Mensagens -->
 {% if mensagens %}
     <h2>Mensagens recebidas</h2>
     <table class="table table-striped">
@@ -173,6 +173,30 @@
 <p class="text-center">Não existem mensagens para apresentar.</p>
 {% endif %}
 
+<!-- Tabela de Reservas -->
+
+{% if reservas %}
+    <h2>Reservas</h2>
+    <div class="row">
+        {% for reserva in reservas %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Reserva: {{ reserva[0] }}</h5>
+                        <p class="card-text">
+                            Cliente: {{ reserva[1] }} ({{ reserva[2] }})<br>
+                            Dia: {{ reserva[3] }} às {{ reserva[4] }}<br>
+                            Número de Pessoas: {{ reserva[5] }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Nenhuma reserva encontrada.</p>
+{% endif %}
+
+
+
 {% endblock %}
-
-
