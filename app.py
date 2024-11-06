@@ -15,6 +15,14 @@ app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'restaurante_bd')
 
 mysql = MySQL(app)  # Inicializa a extensão MySQL com as configurações do Flask
 
+'''def get_db_connection():
+    return mysql.connector.connect(
+        host=app.config['MYSQL_HOST'],
+        user=app.config['MYSQL_USER'],
+        password=app.config['MYSQL_PASSWORD'],
+        database=app.config['MYSQL_DB']
+    )'''
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -56,6 +64,9 @@ def admin():
         # Consulta para produtos
         cur.execute("SELECT * FROM produtos")
         produtos = cur.fetchall()
+        # Consulta para contactos
+        cur.execute("SELECT * FROM mensagens")
+        mensagens = cur.fetchall()
         # Dicionario de categorias
         categorias_dict = {categoria[0]: categoria[1] for categoria in categorias}
         ## Agrupar produtos por categoria
@@ -66,41 +77,7 @@ def admin():
     except Exception as e:
         print(f"Erro ao aceder ao banco de dados: {e}")
         produtos = []
-    return render_template('admin.html', categorias=categorias_dict, produtos=produtos, produtos_por_categoria=produtos_por_categoria)
-
-@app.route('/delete_produto/<int:id>', methods=['POST'])
-def delete_produtos(id):
-    try:
-        print(f"Tentando apagar prdutos com ID: {id}")
-        cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM produtos WHERE id = %s', (id,))
-        massa = cur.fetchone()
-        if not massa:
-            print("ID não encontrado.")
-            return redirect(url_for('admin'))
-
-        cur.execute('DELETE FROM produtos WHERE id = %s', (id,))
-        mysql.connection.commit()
-        print("Registro apagado com sucesso.")
-        return redirect(url_for('admin'))
-    except Exception as e:
-        print(f"Erro ao apagar produto: {e}")
-        return redirect(url_for('admin'))
-    finally:
-        cur.close()
-
-# Define o caminho da pasta onde as imagens serão salvas
-UPLOAD_FOLDER = 'static/imgs'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
-
-def get_db_connection():
-    return mysql.connector.connect(
-        host=app.config['MYSQL_HOST'],
-        user=app.config['MYSQL_USER'],
-        password=app.config['MYSQL_PASSWORD'],
-        database=app.config['MYSQL_DB']
-    )
+    return render_template('admin.html', categorias=categorias_dict, produtos=produtos, produtos_por_categoria=produtos_por_categoria, mensagens=mensagens)
 
 @app.route('/inserir_categoria', methods=['POST'])
 def inserir_categoria():
@@ -135,6 +112,10 @@ def inserir_categoria():
     connection.close()
     
     return redirect(url_for('admin'))
+
+# Define o caminho da pasta onde as imagens serão salvas
+UPLOAD_FOLDER = 'static/imgs'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/inserir_produto', methods=['POST'])
 def inserir_produto():
@@ -171,6 +152,29 @@ def inserir_produto():
     except Exception as e:
         print(f"Erro ao inserir produto: {e}")
         return f"Erro ao inserir produto: {e}", 500
+
+#FALTA DE CODIGO: @app.route('/alterar_produto/<int:id>', methods=['POST'])
+
+@app.route('/delete_produto/<int:id>', methods=['POST'])
+def delete_produtos(id):
+    try:
+        print(f"Tentando apagar prdutos com ID: {id}")
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT * FROM produtos WHERE id = %s', (id,))
+        massa = cur.fetchone()
+        if not massa:
+            print("ID não encontrado.")
+            return redirect(url_for('admin'))
+
+        cur.execute('DELETE FROM produtos WHERE id = %s', (id,))
+        mysql.connection.commit()
+        print("Registro apagado com sucesso.")
+        return redirect(url_for('admin'))
+    except Exception as e:
+        print(f"Erro ao apagar produto: {e}")
+        return redirect(url_for('admin'))
+    finally:
+        cur.close()
     
 @app.route('/contacto', methods=['GET', 'POST'])
 def contacto():
@@ -189,6 +193,8 @@ def contacto():
         # Redirecionamento após o envio do formulário
         return render_template('obrigado.html', nome=nome)
     return render_template('contacto.html')
+
+#FALTA DE CODIGO: @app.route('/mensagem_tratada', methods=['POST'])
 
 @app.route('/reservas', methods=['GET', 'POST'])
 def reservas():

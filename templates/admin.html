@@ -5,6 +5,7 @@
 {% block content %}
 
 <h1 class="text-center">Area de administrador</h1>
+
 <!-- Botao para Inserir Categoria -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#inserirCategoriaModal">
     Inserir Categoria
@@ -118,6 +119,40 @@
 
 {% if not produtos %}
 <p class="text-center">Desculpe, o cardápio está vazio no momento.</p>
+{% endif %}
+
+
+<!-- Tabela de Contactos -->
+{% if mensagens %}
+    <h2>Mensagens recebidas</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Mensagem</th>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mensagens in mensagens %}
+            <tr>
+                <td>{{ mensagens[0] }}</td>
+                <td>{{ mensagens[1] }}</td>
+                <td>{{ mensagens[2] }}</td>
+                <td>{{ mensagens[3] }}</td>
+                <td>{{ mensagens[4] }}</td>
+                <td>
+                    <form action="" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Tratado</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endif %}
 
 {% endblock %}
