@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_mysqldb import MySQL  # Para a base de dados
-import os
+import os, re
 from werkzeug.utils import secure_filename
+from collections import defaultdict
 
 
 app = Flask(__name__)
@@ -23,246 +24,67 @@ def cardapio():
     try:
         cur = mysql.connection.cursor()
         
-        # Consulta para pizzas
-        cur.execute("SELECT * FROM pizzas")
-        pizzas = cur.fetchall()
-        
-        # Consulta para massas
-        cur.execute("SELECT * FROM massas")
-        massas = cur.fetchall()
+        # Consulta para produtos
+        cur.execute("SELECT * FROM produtos")
+        produtos = cur.fetchall()
+
+        # Consulta para categorias
+        cur.execute("SELECT * FROM categorias")
+        categorias = cur.fetchall()
+
+        # Dicionario de categorias
+        categorias_dict = {categoria[0]: categoria[1] for categoria in categorias}
+        ## Agrupar produtos por categoria
+        produtos_por_categoria = defaultdict(list)
+        for produto in produtos: produtos_por_categoria[produto[5]].append(produto)
         
         cur.close()
     except Exception as e:
         print(f"Erro ao aceder ao banco de dados: {e}")
-        pizzas = []
-        massas = []
+        produtos = []
     
-    return render_template('cardapio.html', pizzas=pizzas, massas=massas)
-
-
-    '''
-    # Definindo os itens do cardápio
-    cardapio_items = [
-        {
-            'nome': 'Spaghetti à Carbonara',
-            'descricao': 'Spaghetti com molho de creme, bacon crocante e queijo parmesão.',
-            'preco': 'R$ 35,00'
-        },
-        {
-            'nome': 'Salada Caesar',
-            'descricao': 'Alface romana, croutons, queijo parmesão e molho Caesar.',
-            'preco': 'R$ 25,00'
-        },
-        {
-            'nome': 'Risoto de Funghi',
-            'descricao': 'Risoto cremoso com cogumelos funghi e queijo parmesão.',
-            'preco': 'R$ 40,00'
-        },
-          {
-            'nome': 'Spaghetti à Carbonara',
-            'descricao': 'Spaghetti com molho de creme, bacon crocante e queijo parmesão.',
-            'preco': 'R$ 35,00'
-        },
-        {
-            'nome': 'Salada Caesar',
-            'descricao': 'Alface romana, croutons, queijo parmesão e molho Caesar.',
-            'preco': 'R$ 25,00'
-        },
-        {
-            'nome': 'Risoto de Funghi',
-            'descricao': 'Risoto cremoso com cogumelos funghi e queijo parmesão.',
-            'preco': 'R$ 40,00'
-        },
-          {
-            'nome': 'Spaghetti à Carbonara',
-            'descricao': 'Spaghetti com molho de creme, bacon crocante e queijo parmesão.',
-            'preco': 'R$ 35,00'
-        },
-        {
-            'nome': 'Salada Caesar',
-            'descricao': 'Alface romana, croutons, queijo parmesão e molho Caesar.',
-            'preco': 'R$ 25,00'
-        },
-        {
-            'nome': 'Risoto de Funghi',
-            'descricao': 'Risoto cremoso com cogumelos funghi e queijo parmesão.',
-            'preco': 'R$ 40,00'
-        },
-          {
-            'nome': 'Spaghetti à Carbonara',
-            'descricao': 'Spaghetti com molho de creme, bacon crocante e queijo parmesão.',
-            'preco': 'R$ 35,00'
-        },
-        {
-            'nome': 'Salada Caesar',
-            'descricao': 'Alface romana, croutons, queijo parmesão e molho Caesar.',
-            'preco': 'R$ 25,00'
-        },
-        {
-            'nome': 'Risoto de Funghi',
-            'descricao': 'Risoto cremoso com cogumelos funghi e queijo parmesão.',
-            'preco': 'R$ 40,00'
-        },
-          {
-            'nome': 'Spaghetti à Carbonara',
-            'descricao': 'Spaghetti com molho de creme, bacon crocante e queijo parmesão.',
-            'preco': 'R$ 35,00'
-        },
-        {
-            'nome': 'Salada Caesar',
-            'descricao': 'Alface romana, croutons, queijo parmesão e molho Caesar.',
-            'preco': 'R$ 25,00'
-        },
-        {
-            'nome': 'Risoto de Funghi',
-            'descricao': 'Risoto cremoso com cogumelos funghi e queijo parmesão.',
-            'preco': 'R$ 40,00'
-        },
-          {
-            'nome': 'Spaghetti à Carbonara',
-            'descricao': 'Spaghetti com molho de creme, bacon crocante e queijo parmesão.',
-            'preco': 'R$ 35,00'
-        },
-        {
-            'nome': 'Salada Caesar',
-            'descricao': 'Alface romana, croutons, queijo parmesão e molho Caesar.',
-            'preco': 'R$ 25,00'
-        },
-        {
-            'nome': 'Risoto de Funghi',
-            'descricao': 'Risoto cremoso com cogumelos funghi e queijo parmesão.',
-            'preco': 'R$ 40,00'
-        },
-          {
-            'nome': 'Spaghetti à Carbonara',
-            'descricao': 'Spaghetti com molho de creme, bacon crocante e queijo parmesão.',
-            'preco': 'R$ 35,00'
-        },
-        {
-            'nome': 'Salada Caesar',
-            'descricao': 'Alface romana, croutons, queijo parmesão e molho Caesar.',
-            'preco': 'R$ 25,00'
-        },
-        {
-            'nome': 'Risoto de Funghi',
-            'descricao': 'Risoto cremoso com cogumelos funghi e queijo parmesão.',
-            'preco': 'R$ 40,00'
-        },
-          {
-            'nome': 'Spaghetti à Carbonara',
-            'descricao': 'Spaghetti com molho de creme, bacon crocante e queijo parmesão.',
-            'preco': 'R$ 35,00'
-        },
-        {
-            'nome': 'Salada Caesar',
-            'descricao': 'Alface romana, croutons, queijo parmesão e molho Caesar.',
-            'preco': 'R$ 25,00'
-        },
-        {
-            'nome': 'Risoto de Funghi',
-            'descricao': 'Risoto cremoso com cogumelos funghi e queijo parmesão.',
-            'preco': 'R$ 40,00'
-        },
-          {
-            'nome': 'Spaghetti à Carbonara',
-            'descricao': 'Spaghetti com molho de creme, bacon crocante e queijo parmesão.',
-            'preco': 'R$ 35,00'
-        },
-        {
-            'nome': 'Salada Caesar',
-            'descricao': 'Alface romana, croutons, queijo parmesão e molho Caesar.',
-            'preco': 'R$ 25,00'
-        },
-        {
-            'nome': 'Risoto de Funghi',
-            'descricao': 'Risoto cremoso com cogumelos funghi e queijo parmesão.',
-            'preco': 'R$ 40,00'
-        },
-          {
-            'nome': 'Spaghetti à Carbonara',
-            'descricao': 'Spaghetti com molho de creme, bacon crocante e queijo parmesão.',
-            'preco': 'R$ 35,00'
-        },
-        {
-            'nome': 'Salada Caesar',
-            'descricao': 'Alface romana, croutons, queijo parmesão e molho Caesar.',
-            'preco': 'R$ 25,00'
-        },
-        {
-            'nome': 'Risoto de Funghi',
-            'descricao': 'Risoto cremoso com cogumelos funghi e queijo parmesão.',
-            'preco': 'R$ 40,00'
-        },
-          {
-            'nome': 'Spaghetti à Carbonara',
-            'descricao': 'Spaghetti com molho de creme, bacon crocante e queijo parmesão.',
-            'preco': 'R$ 35,00'
-        },
-        {
-            'nome': 'Salada Caesar',
-            'descricao': 'Alface romana, croutons, queijo parmesão e molho Caesar.',
-            'preco': 'R$ 25,00'
-        },
-        {
-            'nome': 'Risoto de Funghi',
-            'descricao': 'Risoto cremoso com cogumelos funghi e queijo parmesão.',
-            'preco': 'R$ 40,00'
-        },
-          {
-            'nome': 'Spaghetti à Carbonara',
-            'descricao': 'Spaghetti com molho de creme, bacon crocante e queijo parmesão.',
-            'preco': 'R$ 35,00'
-        },
-        {
-            'nome': 'Salada Caesar',
-            'descricao': 'Alface romana, croutons, queijo parmesão e molho Caesar.',
-            'preco': 'R$ 25,00'
-        },
-        {
-            'nome': 'Risoto de Funghi',
-            'descricao': 'Risoto cremoso com cogumelos funghi e queijo parmesão.',
-            'preco': 'R$ 40,00'
-        },
-        
-        # Adicione mais itens conforme necessário
-    ]
-    return render_template('cardapio.html', items=cardapio_items)
-'''
+    return render_template('cardapio.html', categorias=categorias_dict, produtos=produtos, produtos_por_categoria=produtos_por_categoria)
 
 @app.route('/admin')
 def admin():
     try:
         cur = mysql.connection.cursor()
-        # Consulta para pizzas
-        cur.execute("SELECT * FROM pizzas")
-        pizzas = cur.fetchall()
-        # Consulta para massas
-        cur.execute("SELECT * FROM massas")
-        massas = cur.fetchall()    
+
+        # Consulta para categorias
+        cur.execute("SELECT * FROM categorias")
+        categorias = cur.fetchall()
+        # Consulta para produtos
+        cur.execute("SELECT * FROM produtos")
+        produtos = cur.fetchall()
+        # Dicionario de categorias
+        categorias_dict = {categoria[0]: categoria[1] for categoria in categorias}
+        ## Agrupar produtos por categoria
+        produtos_por_categoria = defaultdict(list)
+        for produto in produtos: produtos_por_categoria[produto[5]].append(produto)
+        
         cur.close()
     except Exception as e:
         print(f"Erro ao aceder ao banco de dados: {e}")
-        pizzas = []
-        massas = []
-    return render_template('admin.html', pizzas=pizzas, massas=massas)
+        produtos = []
+    return render_template('admin.html', categorias=categorias_dict, produtos=produtos, produtos_por_categoria=produtos_por_categoria)
 
-@app.route('/delete_massa/<int:id>', methods=['POST'])
-def delete_massa(id):
+@app.route('/delete_produto/<int:id>', methods=['POST'])
+def delete_produtos(id):
     try:
-        print(f"Tentando apagar massa com ID: {id}")
+        print(f"Tentando apagar prdutos com ID: {id}")
         cur = mysql.connection.cursor()
-        cur.execute('SELECT * FROM massas WHERE id = %s', (id,))
+        cur.execute('SELECT * FROM produtos WHERE id = %s', (id,))
         massa = cur.fetchone()
         if not massa:
             print("ID não encontrado.")
             return redirect(url_for('admin'))
 
-        cur.execute('DELETE FROM massas WHERE id = %s', (id,))
+        cur.execute('DELETE FROM produtos WHERE id = %s', (id,))
         mysql.connection.commit()
         print("Registro apagado com sucesso.")
         return redirect(url_for('admin'))
     except Exception as e:
-        print(f"Erro ao apagar massa: {e}")
+        print(f"Erro ao apagar produto: {e}")
         return redirect(url_for('admin'))
     finally:
         cur.close()
@@ -270,6 +92,49 @@ def delete_massa(id):
 # Define o caminho da pasta onde as imagens serão salvas
 UPLOAD_FOLDER = 'static/imgs'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
+def get_db_connection():
+    return mysql.connector.connect(
+        host=app.config['MYSQL_HOST'],
+        user=app.config['MYSQL_USER'],
+        password=app.config['MYSQL_PASSWORD'],
+        database=app.config['MYSQL_DB']
+    )
+
+@app.route('/inserir_categoria', methods=['POST'])
+def inserir_categoria():
+    
+    categoria_nome = request.form['categoria_nome']
+    
+    # Sanitizar o nome da categoria para o nome da tabela
+    categoria_nome_sanitizado = re.sub(r'[^a-zA-Z0-9]', '_', categoria_nome.lower())
+    
+    # Verificar se o nome é reservado
+    RESERVED_NAMES = [
+        'select', 'insert', 'update', 'delete', 'drop', 'create', 'table', 'database', 'index', 'view', 'trigger', 'procedure', 'function'
+    ]
+    if categoria_nome_sanitizado in RESERVED_NAMES:
+        return "Erro: Nome da categoria é reservado e não pode ser usado.", 400
+    
+    # Conectar ao banco de dados
+    connection = mysql.connection
+    cursor = connection.cursor()
+    
+    # Verificar se o nome da categoria já existe na tabela categorias
+    cursor.execute("SELECT id FROM categorias WHERE nome = %s", (categoria_nome,))
+    result = cursor.fetchone()
+    if result:
+        return "Erro: Nome da categoria indisponível.", 400
+    
+    # Inserir o nome da categoria na tabela categorias
+    cursor.execute("INSERT INTO categorias (nome) VALUES (%s)", (categoria_nome,))
+    connection.commit()
+    
+    cursor.close()
+    connection.close()
+    
+    return redirect(url_for('admin'))
 
 @app.route('/inserir_produto', methods=['POST'])
 def inserir_produto():
@@ -279,6 +144,10 @@ def inserir_produto():
         descricao = request.form['descricao']
         preco = request.form['preco']
         imagem = request.files['imagem']
+        id_categoria = request.form['categoria']
+        
+        # Imprime a categoria selecionada para depuração
+        print(f"Categoria selecionada: {id_categoria}")
         
         # Valida e salva a imagem
         if imagem and imagem.filename != '':
@@ -289,19 +158,19 @@ def inserir_produto():
             # Se a imagem não estiver disponível ou inválida
             return "Erro: Imagem inválida.", 400
 
-        # Salva o produto no banco de dados com o nome do arquivo da imagem
+        # Conectar ao banco de dados
         cur = mysql.connection.cursor()
         cur.execute('''
-            INSERT INTO massas (nome, descricao, preco, imagem)
-            VALUES (%s, %s, %s, %s)
-        ''', (nome, descricao, preco, filename))
+            INSERT INTO produtos (nome, descricao, preco, imagem, id_categoria)
+            VALUES (%s, %s, %s, %s, %s)
+        ''', (nome, descricao, preco, filename, id_categoria))
         mysql.connection.commit()
         cur.close()
 
         return redirect(url_for('admin'))  # Redireciona para a página de listagem após inserção
     except Exception as e:
         print(f"Erro ao inserir produto: {e}")
-        return "Erro ao inserir produto.", 500
+        return f"Erro ao inserir produto: {e}", 500
     
 @app.route('/contacto', methods=['GET', 'POST'])
 def contacto():

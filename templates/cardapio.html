@@ -5,48 +5,33 @@
 {% block content %}
 <h1 class="text-center">Nosso Cardápio</h1>
 
-{% if pizzas|length > 5 or massas|length > 5 %}
+{% if produtos|length > 5 %}
     <div class="alert alert-info" role="alert">
         Temos uma variedade incrível de pratos para você escolher!
     </div>
 {% endif %}
 
-{% if pizzas %}
-<h2>Pizzas</h2>
-<div class="row">
-    {% for pizza in pizzas %}
-    <div class="col-md-4">
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title">{{ pizza[1] }}</h5>
-                <p class="card-text">{{ pizza[2] }}</p>
-                <p class="card-text"><strong>€ {{ '%.2f' | format(pizza[3]) }}</strong></p>
+{% if produtos %}
+    {% for categoria_id, produtos in produtos_por_categoria.items() %}
+        <h2>{{ categorias[categoria_id] }}</h2>
+        <div class="row">
+            {% for produtos in produtos %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="{{ url_for('static', filename='imgs/' ~ produtos[4]) }}" class="card-img-top" alt="{{ produtos[1] }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ produtos[1] }}</h5>
+                        <p class="card-text">{{ produtos[2] }}</p>
+                        <p class="card-text"><strong>€ {{ '%.2f' | format(produtos[3]) }}</strong></p>
+                    </div>
+                </div>
             </div>
+            {% endfor %}
         </div>
-    </div>
     {% endfor %}
-</div>
 {% endif %}
 
-{% if massas %}
-<h2>Massas</h2>
-<div class="row">
-    {% for massa in massas %}
-    <div class="col-md-4">
-        <div class="card mb-4">
-            <img src="{{ url_for('static', filename='imgs/' ~ massa[4]) }}" class="card-img-top" alt="{{ massa[1] }}">
-            <div class="card-body">
-                <h5 class="card-title">{{ massa[1] }}</h5>
-                <p class="card-text">{{ massa[2] }}</p>
-                <p class="card-text"><strong>€ {{ '%.2f' | format(massa[3]) }}</strong></p>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
-
-{% if not pizzas and not massas %}
+{% if not produtos %}
 <p class="text-center">Desculpe, o cardápio está vazio no momento.</p>
 {% endif %}
 

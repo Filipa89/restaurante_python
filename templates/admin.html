@@ -3,10 +3,41 @@
 {% block title %}Admin{% endblock %}
 
 {% block content %}
+
 <h1 class="text-center">Area de administrador</h1>
+<!-- Botao para Inserir Categoria -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#inserirCategoriaModal">
+    Inserir Categoria
+</button>
+<!-- Botao para Inserir Produto -->
 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#inserirProdutoModal">
     Inserir Produto
 </button>
+
+<!-- Modal para Inserir Categoria -->
+<div class="modal fade" id="inserirCategoriaModal" tabindex="-1" role="dialog" aria-labelledby="inserirCategoriaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="{{ url_for('inserir_categoria') }}" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="inserirCategoriaLabel">Inserir Nova Categoria</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="categoria_nome">Nome da Categoria</label>
+                        <input type="text" class="form-control" id="categoria_nome" name="categoria_nome" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Inserir</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Modal para Inserir Produto -->
 <div class="modal fade" id="inserirProdutoModal" tabindex="-1" role="dialog" aria-labelledby="inserirProdutoLabel" aria-hidden="true">
@@ -16,7 +47,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="inserirProdutoLabel">Inserir Novo Produto</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
@@ -36,6 +67,14 @@
                         <label for="imagem">Imagem</label>
                         <input type="file" class="form-control-file" id="imagem" name="imagem" accept="image/*" required>
                     </div>
+                    <div class="form-group">
+                        <label for="categoria">Categoria</label>
+                        <select class="form-control" id="categoria" name="categoria" required>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria[0] }}">{{ categoria[1] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>                                        
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Inserir</button>
@@ -45,50 +84,39 @@
     </div>
 </div>
 
-{% if pizzas %}
-<h2>Pizzas</h2>
-<ul class="product-list">
-    {% for pizza in pizzas %}
-    <li class="product-item">
-        <h5>{{ pizza[1] }}</h5>
-        <p>{{ pizza[2] }}</p>
-        <p><strong>€ {{ '%.2f' | format(pizza[3]) }}</strong></p>
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
+<!-- Tabela de Produtos -->
+{% for categoria_id, produtos in produtos_por_categoria.items() %}
+    <h2>{{ categorias[categoria_id] }}</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Imagem</th>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Preço</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produto in produtos %}
+            <tr>
+                <td><img src="{{ url_for('static', filename='imgs/' ~ produto[4]) }}" alt="{{ produto[1] }}" style="width: 100px; height: auto;"></td>
+                <td>{{ produto[1] }}</td>
+                <td>{{ produto[2] }}</td>
+                <td><strong>€ {{ '%.2f' | format(produto[3]) }}</strong></td>
+                <td>
+                    <a href="" class="btn btn-primary">Alterar</a>
+                    <form action="{{ url_for('delete_produtos', id=produto[0]) }}" method="post" style="display:inline;">
+                        <button type="submit" class="btn btn-danger">Apagar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
 
-{% if massas %}
-<h2>Massas</h2>
-<table class="table table-striped">
-<thead>
-<tr>
-<th>Imagem</th>
-<th>Nome</th>
-<th>Descrição</th>
-<th>Preço</th>
-<th>Ações</th>
-</tr>
-</thead>
-<tbody>
-        {% for massa in massas %}
-<tr>
-<td><img src="{{ url_for('static', filename='imgs/' ~ massa[4]) }}" alt="{{ massa[1] }}" style="width: 100px; height: auto;"></td>
-<td>{{ massa[1] }}</td>
-<td>{{ massa[2] }}</td>
-<td><strong>€ {{ '%.2f' | format(massa[3]) }}</strong></td>
-<td>
-<a href="" class="btn btn-primary">Alterar</a>
-<form action="{{ url_for('delete_massa', id=massa[0]) }}" method="post" style="display:inline;">
-<button type="submit" class="btn btn-danger">Apagar</button>
-</form>
-</td>
-</tr>
-        {% endfor %}
-</tbody>
-</table>
-{% endif %}
-{% if not pizzas and not massas %}
+{% if not produtos %}
 <p class="text-center">Desculpe, o cardápio está vazio no momento.</p>
 {% endif %}
 
