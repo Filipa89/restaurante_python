@@ -5,7 +5,7 @@
 {% block content %}
 <h1 class="text-center">Faça sua Reserva</h1>
 <p>Preencha o formulário para reservar uma mesa:</p>
-<form method="post" action="/reservas">
+<form method="post" action="{{ url_for('reservas') }}">
   <div class="form-group">
     <label for="nome">Nome:</label>
     <input type="text" class="form-control" id="nome" name="nome" required>

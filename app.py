@@ -230,8 +230,17 @@ def reservas():
         data = request.form['data']
         horario = request.form['horario']
         pessoas = request.form['pessoas']
-        # Aqui você pode adicionar a lógica para processar a reserva, como salvar em um banco de dados
-        return render_template('reserva_confirmada.html', nome=nome)
+        
+        # Lógica para processar o formulário
+        cur = mysql.connection.cursor()
+        cur.execute('''
+        INSERT INTO reservas (nome, telefone, data, horario, pessoas)
+        VALUES (%s, %s, %s, %s, %s)
+        ''', (nome, telefone, data, horario, pessoas))
+        mysql.connection.commit()
+        cur.close()
+
+        return render_template('reserva_confirmada.html', nome=nome, data=data, horario=horario, pessoas=pessoas)
     return render_template('reservas.html')
 
 @app.route('/galeria')
