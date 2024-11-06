@@ -106,7 +106,9 @@
                 <td>{{ produto[2] }}</td>
                 <td><strong>€ {{ '%.2f' | format(produto[3]) }}</strong></td>
                 <td>
-                    <a href="" class="btn btn-primary">Alterar</a>
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="">
+                        Alterar
+                    </button>
                     <form action="{{ url_for('delete_produtos', id=produto[0]) }}" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-danger">Apagar</button>
                     </form>
@@ -133,6 +135,7 @@
                 <th>Email</th>
                 <th>Mensagem</th>
                 <th>Data</th>
+                <th>Estado</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -145,14 +148,29 @@
                 <td>{{ mensagens[3] }}</td>
                 <td>{{ mensagens[4] }}</td>
                 <td>
-                    <form action="" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-danger">Tratado</button>
-                    </form>
+                    {% if mensagens[5] is none %}
+                    Pendente
+                    {% elif mensagens[5] == 1 %}
+                    Tratado
+                    {% endif %}
+                </td>
+                <td>
+                    <form action="{{ url_for('tratar_mensagem', id=mensagens[0] )}}" method="post" style="display:inline;">
+                        {% if mensagens[5] == 1 %}
+                        <button type="submit" class="btn btn-warning">Rever</button>
+                        {% else %}
+                        <button type="submit" class="btn btn-danger">Tratar</button>
+                        {% endif %}
+                        <a href="mailto:{{ mensagens[1] }}?subject=RE:%20Pedido%20de%20contacto%20id:{{ mensagens[0] }}" class="btn btn-primary">Responder</a>
+                    </form>                    
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+{% endif %}
+{% if not mensagens %}
+<p class="text-center">Não existem mensagens para apresentar.</p>
 {% endif %}
 
 {% endblock %}

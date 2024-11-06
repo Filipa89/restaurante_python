@@ -194,7 +194,33 @@ def contacto():
         return render_template('obrigado.html', nome=nome)
     return render_template('contacto.html')
 
-#FALTA DE CODIGO: @app.route('/mensagem_tratada', methods=['POST'])
+@app.route('/tratar_mensagem/<int:id>', methods=['POST'])
+def tratar_mensagem(id):
+    try:
+        # Conectar ao banco de dados
+        cur = mysql.connection.cursor()
+        
+        # Verificar o estado atual da coluna 'tratado'
+        cur.execute('SELECT tratado FROM mensagens WHERE id = %s', (id,))
+        estado_atual = cur.fetchone()[0]
+        
+        # Alternar o valor de 'tratado'
+        novo_estado = 1 if estado_atual is None else None
+        
+        # Atualizar a coluna 'tratado'
+        cur.execute('''
+            UPDATE mensagens
+            SET tratado = %s
+            WHERE id = %s
+        ''', (novo_estado, id))
+        
+        mysql.connection.commit()
+        cur.close()
+
+        return redirect(url_for('admin'))  # Redireciona para a página de listagem de mensagens
+    except Exception as e:
+        print(f"Erro ao tratar mensagem: {e}")
+        return f"Erro ao tratar mensagem: {e}", 500
 
 @app.route('/reservas', methods=['GET', 'POST'])
 def reservas():
