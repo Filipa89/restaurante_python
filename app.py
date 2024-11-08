@@ -120,7 +120,7 @@ def inserir_categoria():
 UPLOAD_FOLDER = 'static/imgs'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@app.route('/inserir_produto', methods=['POST'])
+@app.route('/inserir_produto', methods=['GET', 'POST'])
 def inserir_produto():
     try:
         # Captura os dados do formulário

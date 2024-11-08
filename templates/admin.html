@@ -6,6 +6,8 @@
 
 <h1 class="text-center">Area de administrador</h1>
 
+________________________________________________________________________________
+<br>
 <!-- Botao para Inserir Categoria -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#inserirCategoriaModal">
     Inserir Categoria
@@ -14,7 +16,8 @@
 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#inserirProdutoModal">
     Inserir Produto
 </button>
-
+<br>
+________________________________________________________________________________
 <!-- Modal para Inserir Categoria -->
 <div class="modal fade" id="inserirCategoriaModal" tabindex="-1" role="dialog" aria-labelledby="inserirCategoriaLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -71,11 +74,11 @@
                     <div class="form-group">
                         <label for="categoria">Categoria</label>
                         <select class="form-control" id="categoria" name="categoria" required>
-                            {% for categoria in categorias %}
-                                <option value="{{ categoria[0] }}">{{ categoria[1] }}</option>
+                            {% for id, nome in categorias.items() %}
+                            <option value="{{ id }}">{{ nome }}</option>
                             {% endfor %}
                         </select>
-                    </div>                                        
+                    </div>                                                                           
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Inserir</button>
@@ -85,9 +88,13 @@
     </div>
 </div>
 
-<!-- Tabela de Produtos -->
+ ________________________________________________________________________________
+ <!-- Tabela de Produtos -->
+<br>
 {% for categoria_id, produtos in produtos_por_categoria.items() %}
+<br>
     <h2>{{ categorias[categoria_id] }}</h2>
+    <br>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -123,8 +130,9 @@
 <p class="text-center">Desculpe, o cardápio está vazio no momento.</p>
 {% endif %}
 
-
+________________________________________________________________________________
 <!-- Tabela de Mensagens -->
+<br>
 {% if mensagens %}
     <h2>Mensagens recebidas</h2>
     <table class="table table-striped">
@@ -173,6 +181,7 @@
 <p class="text-center">Não existem mensagens para apresentar.</p>
 {% endif %}
 
+________________________________________________________________________________
 <!-- Tabela de Reservas -->
 
 {% if reservas %}
