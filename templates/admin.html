@@ -88,8 +88,80 @@ ________________________________________________________________________________
     </div>
 </div>
 
+<!-- Modal para editar produto -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="editForm" method="post" enctype="multipart/form-data" >
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Alterar Produto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="produtoNome">Nome</label>
+                        <input type="text" class="form-control" id="produtoNome" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="produtoDescricao">Descrição</label>
+                        <textarea class="form-control" id="produtoDescricao" name="descricao" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="produtoPreco">Preço</label>
+                        <input type="number" class="form-control" id="produtoPreco" name="preco" step="0.05" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Imagem Atual</label><br>
+                        <img id="produtoImagemAtual" src="" alt="Imagem do Produto" style="width: 150px; height: auto; margin-bottom: 10px;">
+                    </div>
+                    <div class="form-group">
+                        <label for="produtoImagem">Alterar Imagem (opcional)</label>
+                        <input type="file" class="form-control-file" id="produtoImagem" name="imagem">
+                    </div>
+                    <input type="hidden" id="produtoId" name="produtoId">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+
+// JavaScript para abrir a modal e preencher com dados do produto
+function openEditModal(id) {
+    // Obtenha os dados do produto via AJAX
+    fetch(`/get_produto/${id}`)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.error) {
+                // Preencher os campos com os dados recebidos
+                document.getElementById('produtoNome').value = data.nome;
+                document.getElementById('produtoDescricao').value = data.descricao;
+                document.getElementById('produtoPreco').value = data.preco;
+
+                // Definir o caminho da imagem atual
+                document.getElementById('produtoImagemAtual').src = `/static/imgs/${data.imagem}`;
+
+                // Definir o ID do produto a ser atualizado
+                document.getElementById('produtoId').value = data.id;
+
+                // Configurar a ação do formulário com a URL para atualização
+                document.getElementById('editForm').action = `/update_produto/${id}`;
+
+                // Abrir a modal
+                $('#editModal').modal('show');
+            }
+        });
+}
+
+</script>
  ________________________________________________________________________________
- <!-- Tabela de Produtos -->
+<!-- Tabela de Produtos -->
 <br>
 {% for categoria_id, produtos in produtos_por_categoria.items() %}
 <br>
@@ -113,7 +185,7 @@ ________________________________________________________________________________
                 <td>{{ produto[2] }}</td>
                 <td><strong>€ {{ '%.2f' | format(produto[3]) }}</strong></td>
                 <td>
-                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="">
+                    <button type="button" class="btn btn-success" onclick="openEditModal ( {{ produto[0] }} )">
                         Alterar
                     </button>
                     <form action="{{ url_for('delete_produtos', id=produto[0]) }}" method="post" style="display:inline;">
@@ -125,11 +197,6 @@ ________________________________________________________________________________
         </tbody>
     </table>
 {% endfor %}
-
-{% if not produtos %}
-<p class="text-center">Desculpe, o cardápio está vazio no momento.</p>
-{% endif %}
-
 ________________________________________________________________________________
 <!-- Tabela de Mensagens -->
 <br>

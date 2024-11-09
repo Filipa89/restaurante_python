@@ -75,7 +75,6 @@ def admin():
         # Consulta para reservas
         cur.execute("SELECT * FROM reservas")
         reservas = cur.fetchall()
-        
         cur.close()
     except Exception as e:
         print(f"Erro ao aceder ao banco de dados: {e}")
@@ -156,7 +155,80 @@ def inserir_produto():
         print(f"Erro ao inserir produto: {e}")
         return f"Erro ao inserir produto: {e}", 500
 
-#FALTA DE CODIGO: @app.route('/alterar_produto/<int:id>', methods=['POST'])
+from flask import jsonify
+
+@app.route('/get_produto/<int:id>', methods=['GET'])
+def get_produto(id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM produtos WHERE id = %s", (id,))
+    produto = cur.fetchone()
+    cur.close()
+
+    if produto:
+        return jsonify({
+            'id': produto[0],
+            'nome': produto[1],
+            'descricao': produto[2],
+            'preco': produto[3],
+            'imagem': produto[4]
+        })
+    else:
+        return jsonify({'error': 'Produto não encontrado'}), 404
+
+
+from flask import flash  # Para mensagens de feedback
+
+@app.route('/update_produto/<int:id>', methods=['POST'])
+def update_produto(id):
+    nome = request.form['nome']
+    descricao = request.form['descricao']
+    preco = request.form['preco']
+    imagem = request.files.get('imagem')
+
+    # Recuperar os dados do produto antes de atualizar
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT imagem FROM produtos WHERE id = %s", (id,))
+    produto = cur.fetchone()
+    cur.close()
+
+    # Verifica se o nome do produto já existe em outro produto
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id FROM produtos WHERE nome = %s AND id != %s", (nome, id))
+    existing_product = cur.fetchone()
+    cur.close()
+    if existing_product:
+        flash('Erro: Nome de produto já existe.', 'error')
+        return redirect(url_for('admin'))
+    
+    # Se uma nova imagem foi fornecida
+    if imagem and imagem.filename != '':
+        # Excluir a imagem antiga
+        old_image = produto[0]
+        old_image_path = os.path.join(UPLOAD_FOLDER, old_image)
+        if os.path.exists(old_image_path):
+            os.remove(old_image_path)
+
+        # Salvar a nova imagem
+        filename = secure_filename(imagem.filename)
+        imagem.save(os.path.join(UPLOAD_FOLDER, filename))
+
+        # Usar o nome da nova imagem
+        imagem_filename = filename
+    else:
+        # Se não foi fornecida uma nova imagem, manter a imagem antiga
+        imagem_filename = produto[0]
+
+        # Atualizar no banco de dados
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        UPDATE produtos
+        SET nome = %s, descricao = %s, preco = %s, imagem = %s
+        WHERE id = %s
+    """, (nome, descricao, preco, imagem_filename, id))
+    mysql.connection.commit()
+    cur.close()
+
+    return redirect(url_for('admin'))  # Redireciona para a página de produtos
 
 @app.route('/delete_produto/<int:id>', methods=['POST'])
 def delete_produtos(id):
