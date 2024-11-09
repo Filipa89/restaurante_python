@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_mysqldb import MySQL  # Para a base de dados
 import os, re
 from werkzeug.utils import secure_filename
@@ -155,8 +155,6 @@ def inserir_produto():
         print(f"Erro ao inserir produto: {e}")
         return f"Erro ao inserir produto: {e}", 500
 
-from flask import jsonify
-
 @app.route('/get_produto/<int:id>', methods=['GET'])
 def get_produto(id):
     cur = mysql.connection.cursor()
@@ -174,9 +172,6 @@ def get_produto(id):
         })
     else:
         return jsonify({'error': 'Produto não encontrado'}), 404
-
-
-from flask import flash  # Para mensagens de feedback
 
 @app.route('/update_produto/<int:id>', methods=['POST'])
 def update_produto(id):
