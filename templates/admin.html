@@ -180,12 +180,12 @@ function openEditModal(id) {
         <tbody>
             {% for produto in produtos %}
             <tr>
-                <td><img src="{{ url_for('static', filename='imgs/' ~ produto[4]) }}" alt="{{ produto[1] }}" style="width: 100px; height: auto;"></td>
+                <td><img src="{{ url_for('static', filename='imgs/' ~ produto[4]) }}" alt="{{ produto[1] }}" style="width: 50px; height: auto;"></td>
                 <td>{{ produto[1] }}</td>
                 <td>{{ produto[2] }}</td>
                 <td><strong>€ {{ '%.2f' | format(produto[3]) }}</strong></td>
                 <td>
-                    <button type="button" class="btn btn-success" onclick="openEditModal ( {{ produto[0] }} )">
+                    <button type="button" class="btn btn-success" onclick="openEditModal({{ produto[0] }})">
                         Alterar
                     </button>
                     <form action="{{ url_for('delete_produtos', id=produto[0]) }}" method="post" style="display:inline;">
