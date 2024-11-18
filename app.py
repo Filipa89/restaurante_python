@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_mysqldb import MySQL  # Para a base de dados
 import os, re
@@ -187,13 +188,13 @@ def update_produto(id):
     cur.close()
 
     # Verifica se o nome do produto já existe em outro produto
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT id FROM produtos WHERE nome = %s AND id != %s", (nome, id))
-    existing_product = cur.fetchone()
-    cur.close()
-    if existing_product:
-        flash('Erro: Nome de produto já existe.', 'error')
-        return redirect(url_for('admin'))
+    #cur = mysql.connection.cursor()
+    #cur.execute("SELECT id FROM produtos WHERE nome = %s AND id != %s", (nome, id))
+    #existing_product = cur.fetchone()
+    #cur.close()
+    #if existing_product:
+    #    flash('Erro: Nome de produto já existe.', 'error')
+    #    return redirect(url_for('admin'))
     
     # Se uma nova imagem foi fornecida
     if imagem and imagem.filename != '':
