@@ -3,7 +3,13 @@
 {% block title %}Reserva Confirmada{% endblock %}
 
 {% block content %}
-<h1 class="text-center">Reserva Confirmada</h1>
-<p>Obrigado, {{ nome }}! Sua reserva para {{ pessoas }} pessoa(s) no dia {{ data }} às {{ horario }} foi confirmada.</p>
-<p>Entraremos em contato pelo telefone {{ telefone }} para qualquer detalhe adicional.</p>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reserva_confirmada.css') }}">
+
+<h1 class="titulo-confirmacao text-center">Reserva Confirmada</h1>
+<p class="mensagem-confirmacao">Obrigado, {{ nome }}! Sua reserva para {{ pessoas }} pessoa(s) no dia {{ data }} às {{ horario }} foi confirmada.</p>
+<p class="mensagem-contato">Entraremos em contato pelo telefone {{ telefone }} para qualquer detalhe adicional.</p>
+
+<div class="botao-voltar-container">
+    <a href="/" class="botao-voltar">Voltar à página inicial</a>
+</div>
 {% endblock %}

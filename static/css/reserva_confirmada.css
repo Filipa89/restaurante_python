@@ -1,0 +1,43 @@
+/* Estilos para a página de confirmação de reserva */
+
+.titulo-confirmacao {
+    font-size: 32px;
+    color: #28a745;
+    margin-top: 30px;
+    font-weight: bold;
+}
+
+.mensagem-confirmacao {
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.mensagem-contato {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.botao-voltar-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.botao-voltar {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.botao-voltar:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}

@@ -3,29 +3,46 @@
 {% block title %}Reservas{% endblock %}
 
 {% block content %}
-<h1 class="text-center">Faça sua Reserva</h1>
-<p>Preencha o formulário para reservar uma mesa:</p>
-<form method="post" action="{{ url_for('reservas') }}">
-  <div class="form-group">
-    <label for="nome">Nome:</label>
-    <input type="text" class="form-control" id="nome" name="nome" required>
-  </div>
-  <div class="form-group">
-    <label for="telefone">Telefone:</label>
-    <input type="tel" class="form-control" id="telefone" name="telefone" required>
-  </div>
-  <div class="form-group">
-    <label for="data">Data:</label>
-    <input type="date" class="form-control" id="data" name="data" required>
-  </div>
-  <div class="form-group">
-    <label for="horario">Horário:</label>
-    <input type="time" class="form-control" id="horario" name="horario" required>
-  </div>
-  <div class="form-group">
-    <label for="pessoas">Número de Pessoas:</label>
-    <input type="number" class="form-control" id="pessoas" name="pessoas" required>
-  </div>
-  <button type="submit" class="btn btn-primary">Reservar</button>
-</form>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/reservas.css') }}">
+
+<div class="notebook-background">
+    <div class="notebook">
+        <div class="cover"></div>
+        <div class="pages"></div>
+        <div class="spirals">
+            <div class="spiral"></div>
+            <div class="spiral"></div>
+            <div class="spiral"></div>
+            <div class="spiral"></div>
+            <div class="spiral"></div>
+        </div>
+    </div>
+
+    <h1 class="titulo-reserva text-center">Faça sua Reserva</h1>
+    <p class="subtitulo-reserva">Preencha o formulário para reservar uma mesa:</p>
+
+    <form method="post" action="/reservas" class="form-reserva">
+        <div class="form-group">
+            <label for="nome" class="label-form">Nome:</label>
+            <input type="text" class="form-control campo-form" id="nome" name="nome" required>
+        </div>
+        <div class="form-group">
+            <label for="telefone" class="label-form">Telefone:</label>
+            <input type="tel" class="form-control campo-form" id="telefone" name="telefone" required>
+        </div>
+        <div class="form-group">
+            <label for="data" class="label-form">Data:</label>
+            <input type="date" class="form-control campo-form" id="data" name="data" required>
+        </div>
+        <div class="form-group">
+            <label for="horario" class="label-form">Horário:</label>
+            <input type="time" class="form-control campo-form" id="horario" name="horario" required>
+        </div>
+        <div class="form-group">
+            <label for="pessoas" class="label-form">Número de Pessoas:</label>
+            <input type="number" class="form-control campo-form" id="pessoas" name="pessoas" required>
+        </div>
+        <button type="submit" class="btn btn-primary botao-reserva" id="botaoReservarMesa">Reservar</button>
+    </form>
+</div>
 {% endblock %}

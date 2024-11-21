@@ -317,9 +317,9 @@ def reservas():
 @app.route('/galeria')
 def galeria():
     galeria_fotos = [
-        {'url': 'images/chef.jpg', 'descricao': 'Chef Cintia'},
-        {'url': 'images/carbonara.jpg', 'descricao': 'Prato de Spaghetti à Carbonara'},
-        {'url': 'images/entardecer.jpg', 'descricao': 'Ambiente ao Entardecer'},
+        {'url': 'imgs/chef.jpg', 'descricao': 'Chef Cintia'},
+        {'url': 'imgs/carbonara.jpg', 'descricao': 'Prato de Spaghetti à Carbonara'},
+        {'url': 'imgs/entardecer.jpg', 'descricao': 'Ambiente ao Entardecer'},
         # Adicione mais fotos conforme necessário
     ]
     return render_template('galeria.html', fotos=galeria_fotos)

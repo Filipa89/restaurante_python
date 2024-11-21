@@ -3,6 +3,8 @@
 {% block title %}Obrigado{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/obrigado.css') }}">
+
 <h1 class="text-center">Obrigado, {{ nome }}!</h1>
-<p>Sua mensagem foi recebida. Entraremos em contato em breve.</p>
+<p class="mensagem-obrigado">Sua mensagem foi recebida. Entraremos em contato em breve.</p>
 {% endblock %}

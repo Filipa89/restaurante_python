@@ -1,15 +1,36 @@
-{% extends "base.html" %}
+<body>
+    <!-- Vídeo de fundo para telas maiores -->
+    <video autoplay loop muted playsinline id="background-video-desktop" class="background-video">
+      <source src="{{ url_for('static', filename='videos/background_home.mp4') }}" type="video/mp4">
+      Seu navegador não suporta vídeos HTML5.
+    </video>
 
-{% block title %}Página Inicial{% endblock %}
+    <!-- Vídeo de fundo para telas menores (celular) -->
+    <video autoplay loop muted playsinline id="background-video-mobile" class="background-video">
+      <source src="{{ url_for('static', filename='videos/background_mobile.mp4') }}" type="video/mp4">
+      Seu navegador não suporta vídeos HTML5.
+    </video>
 
-{% block content %}
-<h1 class="text-center">Bem-vindo ao nosso restaurante!</h1>
-<p>Venha conhecer nossos pratos deliciosos e ambiente aconchegante.</p>
-{% endblock %}
+    {% extends "base.html" %}
 
-<!-- Footer com margem superior específica para a página principal -->
-{% block footer %}
-<footer style="margin-top: 20px;">
-    <p>&copy; 2024 Restaurante. Todos os direitos reservados.</p>
-</footer>
-{% endblock %}
+    {% block title %}Início{% endblock %}
+
+    {% block content %}
+    <a href="#menu" class="scroll-down">
+        <i class="bi bi-arrow-down-circle"></i>
+    </a>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>Seja Bem-vindo ao Grão d'Areia</h1>
+            <p>O melhor da praia dos Pescadores!</p>
+            <div class="hero-buttons">
+                <a href="/cardapio" class="btn btn-outline-light">Nosso Cardápio</a>
+                <a href="/reservas" class="btn btn-light">
+                    <i class="bi bi-calendar-check"></i> Reservar uma Mesa
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+</body>

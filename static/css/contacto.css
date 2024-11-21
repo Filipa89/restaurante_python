@@ -1,0 +1,168 @@
+/* Estilos globais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+}
+
+/* Container principal da página de contato */
+.contacto-container {
+    padding: 40px 20px;
+    position: relative;
+}
+
+.titulo-contacto {
+    color: #333;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.descricao-contacto {
+    font-size: 18px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Estilo para a imagem de fundo */
+.imagem-lado {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.imagem-cardapio {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Layout de conteúdo para centralizar o formulário */
+.contacto-content {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Formulário do lado direito */
+.formulario-lado {
+    flex: 1;
+    max-width: 500px;
+    background-color: #ffebee;
+    border: 1px solid #880e4f;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: #880e4f;
+}
+
+.subtitulo-contacto {
+    font-size: 24px;
+    color: #880e4f;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Estilos do formulário */
+.form-cardapio .form-group label {
+    font-weight: bold;
+    color: #333;
+    font-size: 16px;
+}
+
+.form-cardapio .form-control {
+    border-radius: 4px;
+    border: 1px solid #880e4f;
+    padding: 10px;
+    font-size: 16px;
+    margin-top: 5px;
+    background-color: #ffffff;
+    color: #333;
+}
+
+.form-cardapio .form-control:focus {
+    border-color: #d32f2f;
+    box-shadow: 0 0 5px rgba(211, 47, 47, 0.3);
+}
+
+/* Botão de envio */
+.btn-enviar {
+    width: 100%;
+    background-color: #880e4f;
+    color: #fff;
+    padding: 12px;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-enviar:hover {
+    background-color: #560027;
+    transform: scale(1.05);
+}
+
+/* Ajustes no footer */
+.footer {
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 40px;
+    border-top: 2px solid #c5a880;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .contacto-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .titulo-contacto {
+        font-size: 28px;
+    }
+
+    .subtitulo-contacto {
+        font-size: 22px;
+    }
+
+    .formulario-lado {
+        padding: 20px;
+    }
+
+    .btn-enviar {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo-contacto {
+        font-size: 24px;
+    }
+
+    .subtitulo-contacto {
+        font-size: 20px;
+    }
+
+    .descricao-contacto {
+        font-size: 16px;
+    }
+
+    .formulario-lado {
+        padding: 15px;
+    }
+
+    .btn-enviar {
+        font-size: 14px;
+        padding: 10px;
+    }
+}

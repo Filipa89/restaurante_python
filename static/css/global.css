@@ -1,0 +1,274 @@
+/* global.css */
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corpo da página */
+body {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    background-color: #f8f9fa;
+    height: 100%;
+}
+
+html, body {
+    margin: 0;
+    height: 100%;
+}
+
+/* Estrutura para garantir o footer fixo no final */
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+}
+
+/* Navbar */
+.navbar {
+    background-color: transparent;
+    transition: background-color 0.3s;
+    border-bottom: 2px solid #ddd;
+}
+
+.navbar.scrolled {
+    background-color: blue;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #333 !important;
+}
+
+.navbar-nav .nav-link {
+    color: black !important;
+    font-size: 1.1em;
+    padding: 0.5em 1em;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+/* Footer */
+.footer {
+    background: rgba(88, 22, 22, 0.8);
+    text-shadow: 2px 2px 4px black;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    margin-top: auto;
+}
+
+.footerH1 {
+    font-size: 15px;
+}
+
+.footerH2 {
+    font-size: 10px;
+}
+
+/* Links no footer */
+.footer a {
+    color: var(--default-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: var(--accent-color);
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    color: #333;
+    margin: 20px 0;
+}
+
+/* Botões */
+.hero-buttons a {
+    background: rgba(88, 22, 22, 0.8);
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: background 0.3s;
+    color: #fff;
+}
+
+.hero-buttons a:hover {
+    background: rgba(255, 255, 255, 1);
+}
+
+/* Vídeo de fundo */
+#background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+}
+
+/* Conteúdo sobre o vídeo */
+.content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Hero Content */
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.hero-content h1, .hero-content p {
+    color: rgb(88, 22, 22);
+    text-shadow: 2px 2px 4px #fff;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 1s ease forwards;
+    font-size: 40px;
+}
+
+.hero-content h1 {
+    animation-delay: 0.5s;
+}
+
+.hero-content p {
+    animation-delay: 0.7s;
+    font-size: 20px;
+}
+
+.hero-buttons a {
+    animation-delay: 0.9s;
+}
+
+/* Animação */
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Ajustes na Navbar para Responsividade */
+.navbar .navbar-brand {
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+    padding-left: 0.5em;
+}
+
+.navbar-toggler {
+    margin-right: 1em;
+}
+
+/* Espaçamento entre os Botões */
+.hero-buttons a {
+    margin-right: 10px; /* Espaço entre os botões */
+    padding: 8px 16px;
+    background:rgba(88, 22, 22, 0.8);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: background-color 1.5s, color 1.5s; /* Transição suave */
+    
+}
+
+.hero-buttons a:hover {
+    background-color: #ffffff; /* Fundo claro ao passar o mouse */
+    color: #000000; /* Texto escuro */
+}
+
+/* Ajuste de Altura da Hero Section para Responsividade */
+.hero-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh; /* Ajuste para manter a seção visível */
+}
+
+/* Footer Fixado no Final em Telas Menores */
+.footer {
+    background: rgba(88, 22, 22, 0.8);
+    text-shadow: 2px 2px 4px black;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    margin-top: auto;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    /* Ajustes para Hero Content em Tela Pequena */
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .hero-buttons a {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+
+    /* Ajustes para o Footer */
+    .footer {
+        background-color: rgba(88, 22, 22, 0.8);
+        text-shadow: 2px 2px 4px black;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        margin-top: auto; /* Empurra o footer para o fim */
+    }
+}
+/* Vídeo de fundo desktop (telas maiores) */
+#background-video-desktop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    display: block;
+}
+
+/* Vídeo de fundo mobile (telas menores) */
+#background-video-mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    display: none;
+}
+
+/* Responsividade: troca de vídeo para telas menores */
+@media (max-width: 768px) {
+    #background-video-desktop {
+        display: none;
+    }
+
+    #background-video-mobile {
+        display: block;
+    }
+}
