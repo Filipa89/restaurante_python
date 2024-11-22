@@ -184,7 +184,7 @@ function openEditModal(id) {
                 <td>{{ produto[2] }}</td>
                 <td><strong>€ {{ '%.2f' | format(produto[3]) }}</strong></td>
                 <td>
-                    <button type="button" class="btn btn-success" onclick="openEditModal({{ produto[0] }})">
+                    <button type="button" class="btn btn-success" onclick="openEditModal('{{ produto[0] }}')">
                         Alterar
                     </button>
                     <form action="{{ url_for('delete_produtos', id=produto[0]) }}" method="post" style="display:inline;">
