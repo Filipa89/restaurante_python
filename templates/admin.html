@@ -5,133 +5,150 @@
 {% block content %}
 
 <h1 class="text-center">Area de administrador</h1>
+<hr>
+<!-- Navegação por Abas -->
+<ul class="nav nav-tabs" id="adminTabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" id="produtos-tab" data-toggle="tab" href="#produtos" role="tab" aria-controls="produtos" aria-selected="true">Gestão de Produtos</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="contactos-tab" data-toggle="tab" href="#contactos" role="tab" aria-controls="contactos" aria-selected="false">Gestão de Contactos</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="reservas-tab" data-toggle="tab" href="#reservas" role="tab" aria-controls="reservas" aria-selected="false">Gestão de Reservas</a>
+    </li>
+</ul>
 
-________________________________________________________________________________
-<br>
-<!-- Botao para Inserir Categoria -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#inserirCategoriaModal">
-    Inserir Categoria
-</button>
-<!-- Botao para Inserir Produto -->
-<button type="button" class="btn btn-success" data-toggle="modal" data-target="#inserirProdutoModal">
-    Inserir Produto
-</button>
-<br>
-________________________________________________________________________________
-<!-- Modal para Inserir Categoria -->
-<div class="modal fade" id="inserirCategoriaModal" tabindex="-1" role="dialog" aria-labelledby="inserirCategoriaLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form action="{{ url_for('inserir_categoria') }}" method="post">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="inserirCategoriaLabel">Inserir Nova Categoria</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="categoria_nome">Nome da Categoria</label>
-                        <input type="text" class="form-control" id="categoria_nome" name="categoria_nome" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Inserir</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<!-- Conteúdo das Abas -->
+<div class="tab-content" id="adminTabsContent">
+    <!-- Aba de Gestão de Produtos -->
+    <div class="tab-pane fade show active" id="produtos" role="tabpanel" aria-labelledby="produtos-tab">
+        <br>
+        <h2>Gestão de Produtos</h2>
+        <br>
+        <!-- Botao para Inserir Categoria -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#inserirCategoriaModal">
+            Inserir Categoria
+        </button>
+        <!-- Botao para Inserir Produto -->
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#inserirProdutoModal">
+            Inserir Produto
+        </button>
+        <br>
 
-<!-- Modal para Inserir Produto -->
-<div class="modal fade" id="inserirProdutoModal" tabindex="-1" role="dialog" aria-labelledby="inserirProdutoLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form action="{{ url_for('inserir_produto') }}" method="post" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="inserirProdutoLabel">Inserir Novo Produto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
+        <!-- Modal para Inserir Categoria -->
+        <div class="modal fade" id="inserirCategoriaModal" tabindex="-1" role="dialog" aria-labelledby="inserirCategoriaLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="{{ url_for('inserir_categoria') }}" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="inserirCategoriaLabel">Inserir Nova Categoria</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="categoria_nome">Nome da Categoria</label>
+                                <input type="text" class="form-control" id="categoria_nome" name="categoria_nome" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Inserir</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nome">Nome</label>
-                        <input type="text" class="form-control" id="nome" name="nome" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="descricao">Descrição</label>
-                        <textarea class="form-control" id="descricao" name="descricao" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="preco">Preço (€)</label>
-                        <input type="number" step="0.01" class="form-control" id="preco" name="preco" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="imagem">Imagem</label>
-                        <input type="file" class="form-control-file" id="imagem" name="imagem" accept="image/*" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="categoria">Categoria</label>
-                        <select class="form-control" id="categoria" name="categoria" required>
-                            {% for id, nome in categorias.items() %}
-                            <option value="{{ id }}">{{ nome }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>                                                                           
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Inserir</button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-</div>
 
-<!-- Modal para editar produto -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form id="editForm" method="post" enctype="multipart/form-data" >
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Alterar Produto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+        <!-- Modal para Inserir Produto -->
+        <div class="modal fade" id="inserirProdutoModal" tabindex="-1" role="dialog" aria-labelledby="inserirProdutoLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form action="{{ url_for('inserir_produto') }}" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="inserirProdutoLabel">Inserir Novo Produto</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="nome">Nome</label>
+                                <input type="text" class="form-control" id="nome" name="nome" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="descricao">Descrição</label>
+                                <textarea class="form-control" id="descricao" name="descricao" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="preco">Preço (€)</label>
+                                <input type="number" step="0.01" class="form-control" id="preco" name="preco" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="imagem">Imagem</label>
+                                <input type="file" class="form-control-file" id="imagem" name="imagem" accept="image/*" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="categoria">Categoria</label>
+                                <select class="form-control" id="categoria" name="categoria" required>
+                                    {% for id, nome in categorias.items() %}
+                                    <option value="{{ id }}">{{ nome }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>                                                                           
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Inserir</button>
+                        </div>
+                    </form>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="produtoNome">Nome</label>
-                        <input type="text" class="form-control" id="produtoNome" name="nome" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="produtoDescricao">Descrição</label>
-                        <textarea class="form-control" id="produtoDescricao" name="descricao" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="produtoPreco">Preço</label>
-                        <input type="number" class="form-control" id="produtoPreco" name="preco" step="0.05" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Imagem Atual</label><br>
-                        <img id="produtoImagemAtual" src="" alt="Imagem do Produto" style="width: 150px; height: auto; margin-bottom: 10px;">
-                    </div>
-                    <div class="form-group">
-                        <label for="produtoImagem">Alterar Imagem (opcional)</label>
-                        <input type="file" class="form-control-file" id="produtoImagem" name="imagem">
-                    </div>
-                    <input type="hidden" id="produtoId" name="produtoId">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-</div>
+
+        <!-- Modal para editar produto -->
+        <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form id="editForm" method="post" enctype="multipart/form-data" >
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Alterar Produto</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="produtoNome">Nome</label>
+                                <input type="text" class="form-control" id="produtoNome" name="nome" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="produtoDescricao">Descrição</label>
+                                <textarea class="form-control" id="produtoDescricao" name="descricao" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="produtoPreco">Preço</label>
+                                <input type="number" class="form-control" id="produtoPreco" name="preco" step="0.05" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Imagem Atual</label><br>
+                                <img id="produtoImagemAtual" src="" alt="Imagem do Produto" style="width: 150px; height: auto; margin-bottom: 10px;">
+                            </div>
+                            <div class="form-group">
+                                <label for="produtoImagem">Alterar Imagem (opcional)</label>
+                                <input type="file" class="form-control-file" id="produtoImagem" name="imagem">
+                            </div>
+                            <input type="hidden" id="produtoId" name="produtoId">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 <script>
-
 // JavaScript para abrir a modal e preencher com dados do produto
 function openEditModal(id) {
     // Obtenha os dados do produto via AJAX
@@ -159,119 +176,124 @@ function openEditModal(id) {
         });
 }
 </script>
- ________________________________________________________________________________
-<!-- Tabela de Produtos -->
-<br>
-{% for categoria_id, produtos in produtos_por_categoria.items() %}
-<br>
-    <h2>{{ categorias[categoria_id] }}</h2>
-    <br>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Imagem</th>
-                <th>Nome</th>
-                <th>Descrição</th>
-                <th>Preço</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for produto in produtos %}
-            <tr>
-                <td><img src="{{ url_for('static', filename='imgs/' ~ produto[4]) }}" alt="{{ produto[1] }}" style="width: 50px; height: auto;"></td>
-                <td>{{ produto[1] }}</td>
-                <td>{{ produto[2] }}</td>
-                <td><strong>€ {{ '%.2f' | format(produto[3]) }}</strong></td>
-                <td>
-                    <button type="button" class="btn btn-success" onclick="openEditModal('{{ produto[0] }}')">
-                        Alterar
-                    </button>
-                    <form action="{{ url_for('delete_produtos', id=produto[0]) }}" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-danger">Apagar</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endfor %}
-________________________________________________________________________________
-<!-- Tabela de Mensagens -->
-<br>
-{% if mensagens %}
-    <h2>Mensagens recebidas</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Mensagem</th>
-                <th>Data</th>
-                <th>Estado</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for mensagens in mensagens %}
-            <tr>
-                <td>{{ mensagens[0] }}</td>
-                <td>{{ mensagens[1] }}</td>
-                <td>{{ mensagens[2] }}</td>
-                <td>{{ mensagens[3] }}</td>
-                <td>{{ mensagens[4] }}</td>
-                <td>
-                    {% if mensagens[5] is none %}
-                    Pendente
-                    {% elif mensagens[5] == 1 %}
-                    Tratado
-                    {% endif %}
-                </td>
-                <td>
-                    <form action="{{ url_for('tratar_mensagem', id=mensagens[0] )}}" method="post" style="display:inline;">
-                        {% if mensagens[5] == 1 %}
-                        <button type="submit" class="btn btn-warning">Rever</button>
-                        {% else %}
-                        <button type="submit" class="btn btn-danger">Tratar</button>
-                        {% endif %}
-                        <a href="mailto:{{ mensagens[1] }}?subject=RE:%20Pedido%20de%20contacto%20id:{{ mensagens[0] }}" class="btn btn-primary">Responder</a>
-                    </form>                    
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endif %}
-{% if not mensagens %}
-<p class="text-center">Não existem mensagens para apresentar.</p>
-{% endif %}
 
-________________________________________________________________________________
-<!-- Tabela de Reservas -->
-
-{% if reservas %}
-    <h2>Reservas</h2>
-    <div class="row">
-        {% for reserva in reservas %}
-            <div class="col-md-4">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h5 class="card-title">Reserva: {{ reserva[0] }}</h5>
-                        <p class="card-text">
-                            Cliente: {{ reserva[1] }} ({{ reserva[2] }})<br>
-                            Dia: {{ reserva[3] }} às {{ reserva[4] }}<br>
-                            Número de Pessoas: {{ reserva[5] }}
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <!-- Tabela de Produtos -->
+        <br>
+        {% for categoria_id, produtos in produtos_por_categoria.items() %}
+        <br>
+            <h2>{{ categorias[categoria_id] }}</h2>
+            <br>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Imagem</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Preço</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for produto in produtos %}
+                    <tr>
+                        <td><img src="{{ url_for('static', filename='imgs/' ~ produto[4]) }}" alt="{{ produto[1] }}" style="width: 50px; height: auto;"></td>
+                        <td>{{ produto[1] }}</td>
+                        <td>{{ produto[2] }}</td>
+                        <td><strong>€ {{ '%.2f' | format(produto[3]) }}</strong></td>
+                        <td>
+                            <button type="button" class="btn btn-success" onclick="openEditModal('{{ produto[0] }}')">
+                                Alterar
+                            </button>
+                            <form action="{{ url_for('delete_produtos', id=produto[0]) }}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-danger">Apagar</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         {% endfor %}
     </div>
-{% else %}
-    <p>Nenhuma reserva encontrada.</p>
-{% endif %}
+<!-- Tabela de Mensagens -->
+<br>
+<!-- Aba de Gestão de Contactos -->
+<div class="tab-pane fade" id="contactos" role="tabpanel" aria-labelledby="contactos-tab">
+    <br>
+    <h2>Gestão de Contactos</h2>
+    {% if mensagens %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Mensagem</th>
+                    <th>Data</th>
+                    <th>Estado</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mensagens in mensagens %}
+                <tr>
+                    <td>{{ mensagens[0] }}</td>
+                    <td>{{ mensagens[1] }}</td>
+                    <td>{{ mensagens[2] }}</td>
+                    <td>{{ mensagens[3] }}</td>
+                    <td>{{ mensagens[4] }}</td>
+                    <td>
+                        {% if mensagens[5] is none %}
+                        Pendente
+                        {% elif mensagens[5] == 1 %}
+                        Tratado
+                        {% endif %}
+                    </td>
+                    <td>
+                        <form action="{{ url_for('tratar_mensagem', id=mensagens[0] )}}" method="post" style="display:inline;">
+                            {% if mensagens[5] == 1 %}
+                            <button type="submit" class="btn btn-warning">Rever</button>
+                            {% else %}
+                            <button type="submit" class="btn btn-danger">Tratar</button>
+                            {% endif %}
+                            <a href="mailto:{{ mensagens[2] }}?subject=RE:%20Pedido%20de%20contacto%20id:{{ mensagens[0] }}" class="btn btn-primary">Responder</a>
+                        </form>                    
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    {% if not mensagens %}
+    <p class="text-center">Não existem mensagens para apresentar.</p>
+    {% endif %}
+</div>
 
+<!-- Tabela de Reservas -->
+ <!-- Aba de Gestão de Reservas -->
+ <div class="tab-pane fade" id="reservas" role="tabpanel" aria-labelledby="reservas-tab">
+    <br>
+    <h2>Gestão de Reservas</h2>
+    {% if reservas %}
+        <div class="row">
+            {% for reserva in reservas %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Reserva: {{ reserva[0] }}</h5>
+                            <p class="card-text">
+                                Cliente: {{ reserva[1] }} ({{ reserva[2] }})<br>
+                                Dia: {{ reserva[3] }} às {{ reserva[4] }}<br>
+                                Número de Pessoas: {{ reserva[5] }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Nenhuma reserva encontrada.</p>
+    {% endif %}
+</div>
 
 
 {% endblock %}
